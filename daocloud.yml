@@ -1,0 +1,4 @@
+image: daocloud/ci-python:2.7
+
+script:
+  - echo "Nothing to CI"
