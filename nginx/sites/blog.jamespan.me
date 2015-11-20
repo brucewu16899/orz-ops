@@ -7,8 +7,6 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-
-    #error_page 404 http://blog.jamespan.me/404.html;
 }
 
 server {
@@ -20,8 +18,6 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-
-    #error_page 404 =http://blog.jamespan.me/404.html;
 }
 
 upstream backend_blog_jamespan_me {
@@ -43,11 +39,5 @@ server {
         add_header  X-Time '$request_time';
 
         proxy_pass http://backend_blog_jamespan_me;
-
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
-
-    #error_page 404 http://blog.jamespan.me/404.html;
 }
