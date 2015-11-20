@@ -1,0 +1,14 @@
+- hosts: all
+  tasks:
+  - name: Install Docker PY
+    pip: name=docker-py==1.4.0 
+    become: yes
+  - name: Start nginx proxy
+    docker:
+      name: ng-proxy
+      image: jamespan/nginx-proxy
+      state: reloaded
+      pull: always
+      net: bridge
+      ports: 
+      - "80:80"

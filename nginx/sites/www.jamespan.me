@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name www.jamespan.me;
+    location /blog/ {
+        rewrite ^/blog/(.*) http://blog.jamespan.me/$1 permanent;
+    }
+}
+
+server {
+    listen 80;
+    server_name jamespan.me;
+    location / {
+        rewrite ^/(.*) http://blog.jamespan.me/$1 permanent;
+    }
+}
