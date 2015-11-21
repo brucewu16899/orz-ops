@@ -5,7 +5,7 @@ MAINTAINER Pan Jiabang <panjiabang@gmail.com>
 COPY ./config.json /tmp/shadowsocks-config.json
 ADD http://dl.chenyufei.info/shadowsocks/1.1.4/shadowsocks-server-linux64-1.1.4.gz /tmp/shadowsocks-server.gz
 WORKDIR /tmp/
-RUN gzip -d shadowsocks-server && chmod +x ./shadowsocks-server
+RUN gzip -d shadowsocks-server.gz && chmod +x ./shadowsocks-server
 
 EXPOSE 8388
 
