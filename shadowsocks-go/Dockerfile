@@ -9,7 +9,5 @@ RUN gzip -d shadowsocks-server.gz && chmod +x ./shadowsocks-server
 
 EXPOSE 8388
 
-VOLUME ["/tmp/shadowsocks-config.json"]
-
 # Start Nginx and with dockerize
 CMD ["/tmp/shadowsocks-server", "-c", "/tmp/shadowsocks-config.json"]
