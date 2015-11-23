@@ -15,14 +15,34 @@ RUN mkdir -p /tmp/src && \
     wget http://nginx.org/download/${NGINX_VERSION}.tar.gz && \
     tar -zxvf ${NGINX_VERSION}.tar.gz && \
     cd /tmp/src/${NGINX_VERSION} && \
+    pkgname=nginx && \
+    _rundir=/var/run/$pkgname && \
+    _logdir=/var/log/$pkgname && \
+    _homedir=/var/lib/$pkgname && \
+    _tmpdir=/tmp && \
+    _datadir=/usr/share/$pkgname && \
+    _confdir=/etc/$pkgname && \
     ./configure \
+        --prefix=$_datadir \
+        --sbin-path=/usr/sbin/$pkgname \
+        --conf-path=$_confdir/$pkgname.conf \
+        --pid-path=$_rundir/$pkgname.pid \
+        --lock-path=$_rundir/$pkgname.lock \
+        --error-log-path=$_logdir/error.log \
+        --http-log-path=$_logdir/access.log \
+        --user=nginx \
+        --group=nginx \
+        --with-file-aio \
+        --with-pcre-jit \
+        --with-http_dav_module \
         --with-http_ssl_module \
+        --with-http_stub_status_module \
         --with-http_gzip_static_module \
-        --add-module=/tmp/src/nginx-upstream-fair-master \
-        --prefix=/etc/nginx \
-        --http-log-path=/var/log/nginx/access.log \
-        --error-log-path=/var/log/nginx/error.log \
-        --sbin-path=/usr/local/sbin/nginx && \
+        --with-http_spdy_module \
+        --with-http_auth_request_module \
+        --with-mail \
+        --with-mail_ssl_module \
+        --add-module=/tmp/src/nginx-upstream-fair-master
     make && \
     make install && \
     apk del build-base openssl-dev pcre-dev zlib-dev && \
