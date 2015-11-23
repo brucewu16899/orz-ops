@@ -15,21 +15,14 @@ RUN mkdir -p /tmp/src && \
     wget http://nginx.org/download/${NGINX_VERSION}.tar.gz && \
     tar -zxvf ${NGINX_VERSION}.tar.gz && \
     cd /tmp/src/${NGINX_VERSION} && \
-    pkgname=nginx && \
-    _rundir=/var/run/$pkgname && \
-    _logdir=/var/log/$pkgname && \
-    _homedir=/var/lib/$pkgname && \
-    _tmpdir=/tmp && \
-    _datadir=/usr/share/$pkgname && \
-    _confdir=/etc/$pkgname && \
     ./configure \
-        --prefix=$_datadir \
-        --sbin-path=/usr/sbin/$pkgname \
-        --conf-path=$_confdir/$pkgname.conf \
-        --pid-path=$_rundir/$pkgname.pid \
-        --lock-path=$_rundir/$pkgname.lock \
-        --error-log-path=$_logdir/error.log \
-        --http-log-path=$_logdir/access.log \
+        --prefix=/usr/share/nginx \
+        --sbin-path=/usr/sbin/nginx \
+        --conf-path=/etc/nginx/nginx.conf \
+        --pid-path=/var/run/nginx/nginx.pid \
+        --lock-path=/var/run/nginx/nginx.lock \
+        --error-log-path=/var/log/nginx/error.log \
+        --http-log-path=/var/log/nginx/access.log \
         --user=nginx \
         --group=nginx \
         --with-file-aio \
