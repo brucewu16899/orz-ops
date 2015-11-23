@@ -11,7 +11,7 @@ RUN mkdir -p /tmp/src && \
     apk add openssl pcre zlib && \
     wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip && \
     unzip master.zip && \
-    apk add openssl-dev pcre-dev zlib-dev build-base && \
+    apk add openssl-dev pcre-dev zlib-dev linux-headers build-base && \
     wget http://nginx.org/download/${NGINX_VERSION}.tar.gz && \
     tar -zxvf ${NGINX_VERSION}.tar.gz && \
     cd /tmp/src/${NGINX_VERSION} && \
@@ -38,7 +38,7 @@ RUN mkdir -p /tmp/src && \
         --add-module=/tmp/src/nginx-upstream-fair-master
     make && \
     make install && \
-    apk del build-base openssl-dev pcre-dev zlib-dev && \
+    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers && \
     rm -rf /tmp/src && \
     rm -rf /var/cache/apk/*
 
