@@ -3,19 +3,18 @@ FROM alpine:3.2
 MAINTAINER Pan Jiabang <panjiabang@gmail.com> 
 
 # Install Nginx From Source
+ENV NGINX_VERSION nginx-1.8.0
 
 RUN mkdir -p /tmp/src && \
     cd /tmp/src && \
     apk update && \
-    apk add openssl pcre zlib perl lua && \
+    apk add openssl pcre zlib && \
     wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip && \
-    unzip master.zip
-
-WORKDIR /tmp/src
-RUN    apk add openssl-dev pcre-dev zlib-dev readline-dev ncurses-dev linux-headers build-base
-RUN    https://openresty.org/download/ngx_openresty-1.9.3.2.tar.gz
-RUN    tar -zxvf ngx_openresty-1.9.3.2.tar.gz && \
-    cd /tmp/src/ngx_openresty-1.9.3.2 && \
+    unzip master.zip && \
+    apk add openssl-dev pcre-dev zlib-dev linux-headers build-base && \
+    wget http://nginx.org/download/${NGINX_VERSION}.tar.gz && \
+    tar -zxvf ${NGINX_VERSION}.tar.gz && \
+    cd /tmp/src/${NGINX_VERSION} && \
     ./configure \
         --prefix=/usr/share/nginx \
         --sbin-path=/usr/sbin/nginx \
