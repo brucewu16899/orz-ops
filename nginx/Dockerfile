@@ -9,12 +9,10 @@ RUN mkdir -p /tmp/src && \
     apk update && \
     apk add openssl pcre zlib perl lua && \
     wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip && \
-    unzip master.zip
-
-WORKDIR /tmp/src
-RUN    apk add openssl-dev pcre-dev zlib-dev readline-dev ncurses-dev linux-headers build-base
-RUN    wget https://openresty.org/download/ngx_openresty-1.9.3.2.tar.gz
-RUN    tar -zxvf ngx_openresty-1.9.3.2.tar.gz && \
+    unzip master.zip && \
+    apk add openssl-dev pcre-dev zlib-dev readline-dev ncurses-dev linux-headers build-base && \
+    wget https://openresty.org/download/ngx_openresty-1.9.3.2.tar.gz && \
+    tar -zxvf ngx_openresty-1.9.3.2.tar.gz && \
     cd /tmp/src/ngx_openresty-1.9.3.2 && \
     ./configure \
         --prefix=/usr/share/nginx \
@@ -37,10 +35,10 @@ RUN    tar -zxvf ngx_openresty-1.9.3.2.tar.gz && \
         --with-mail_ssl_module \
         --add-module=/tmp/src/nginx-upstream-fair-master && \
     make && \
-    make install && \
-    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers && \
-    rm -rf /tmp/src && \
-    rm -rf /var/cache/apk/*
+    make install
+    #apk del build-base openssl-dev pcre-dev zlib-dev linux-headers && \
+    #rm -rf /tmp/src && \
+    #rm -rf /var/cache/apk/*
 
 # Copy Config
 COPY nginx.conf /etc/nginx/nginx.conf
