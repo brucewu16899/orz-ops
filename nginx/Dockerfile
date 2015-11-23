@@ -35,7 +35,7 @@ RUN mkdir -p /tmp/src && \
         --with-mail_ssl_module \
         --add-module=/tmp/src/nginx-upstream-fair-master && \
     make && \
-    make install
+    make install && make clean
     #apk del build-base openssl-dev pcre-dev zlib-dev linux-headers && \
     #rm -rf /tmp/src && \
     #rm -rf /var/cache/apk/*
