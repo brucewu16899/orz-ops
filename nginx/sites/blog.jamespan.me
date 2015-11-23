@@ -23,7 +23,8 @@ server {
 upstream backend_blog_jamespan_me {
     #ip_hash;
     server 127.0.0.1:4000 backup;
-    server 127.0.0.1:4001;
+    #server 127.0.0.1:4001;
+    server 127.0.0.1:3030;
 }
 
 server {
