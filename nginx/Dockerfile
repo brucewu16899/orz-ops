@@ -23,8 +23,6 @@ RUN mkdir -p /tmp/src && \
         --lock-path=/var/run/nginx/nginx.lock \
         --error-log-path=/var/log/nginx/error.log \
         --http-log-path=/var/log/nginx/access.log \
-        --user=nginx \
-        --group=nginx \
         --with-ipv6 \
         --with-file-aio \
         --with-pcre-jit \
@@ -48,8 +46,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY sites/* /etc/nginx/sites-enabled/
 
 # forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
 EXPOSE 80 443
 
