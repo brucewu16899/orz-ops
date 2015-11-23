@@ -13,7 +13,7 @@ RUN mkdir -p /tmp/src && \
 
 WORKDIR /tmp/src
 RUN    apk add openssl-dev pcre-dev zlib-dev readline-dev ncurses-dev linux-headers build-base
-RUN    https://openresty.org/download/ngx_openresty-1.9.3.2.tar.gz
+RUN    wget https://openresty.org/download/ngx_openresty-1.9.3.2.tar.gz
 RUN    tar -zxvf ngx_openresty-1.9.3.2.tar.gz && \
     cd /tmp/src/ngx_openresty-1.9.3.2 && \
     ./configure \
