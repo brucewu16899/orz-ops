@@ -25,6 +25,7 @@ RUN mkdir -p /tmp/src && \
         --http-log-path=/var/log/nginx/access.log \
         --user=nginx \
         --group=nginx \
+        --with-ipv6 \
         --with-file-aio \
         --with-pcre-jit \
         --with-http_dav_module \
@@ -35,7 +36,7 @@ RUN mkdir -p /tmp/src && \
         --with-http_auth_request_module \
         --with-mail \
         --with-mail_ssl_module \
-        --add-module=/tmp/src/nginx-upstream-fair-master &&\
+        --add-module=/tmp/src/nginx-upstream-fair-master && \
     make && \
     make install && \
     apk del build-base openssl-dev pcre-dev zlib-dev linux-headers && \
