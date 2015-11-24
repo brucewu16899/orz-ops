@@ -64,7 +64,6 @@ if need_update_weight then
     res_time_dict:set("max", max_time)
     res_time_dict:set("min", min_time)
 
-    
     local srvs, err = upstream.get_primary_peers("backend_blog_jamespan_me")
     if srvs then
         for _, srv in ipairs(srvs) do
@@ -73,7 +72,7 @@ if need_update_weight then
             if server_res_time ~= nil then
                 local weight = math.ceil(max_time / server_res_time)
                 local id = srv["id"]
-                weight = math.pow(2, weight)
+                --weight = math.pow(2, weight)
                 upstream.set_peer_weight("backend_blog_jamespan_me", false, id, weight)
                 weight_dict:set(server_name, weight)
                 --upstream.set_peer_current_weight("backend_blog_jamespan_me", false, id, 0)
