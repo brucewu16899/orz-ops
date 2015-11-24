@@ -7,7 +7,7 @@ MAINTAINER Pan Jiabang <panjiabang@gmail.com>
 RUN mkdir -p /tmp/src && \
     cd /tmp/src && \
     apk update && \
-    apk add openssl pcre libgcc && \
+    apk add openssl pcre libgcc perl && \
     wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip && \
     unzip master.zip && \
     apk add openssl-dev pcre-dev zlib-dev readline-dev ncurses-dev linux-headers build-base && \
@@ -38,7 +38,7 @@ RUN mkdir -p /tmp/src && \
         --add-module=/tmp/src/nginx-upstream-fair-master && \
     make && \
     make install && make clean && \
-    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers && \
+    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers perl && \
     rm -rf /tmp/src && \
     rm -rf /var/cache/apk/* && \
     echo "Done"
