@@ -23,23 +23,70 @@ server {
 upstream backend_blog_jamespan_me {
     #ip_hash;
     server 127.0.0.1:4000;
-    server 127.0.0.1:4001 backup;
+    server 127.0.0.1:4001;
     server 203.88.174.206:3030;
     server 47.88.139.152:3030;
 }
+
+lua_shared_dict log_dict 5M;
+
+lua_shared_dict upstream_res_time_dict 5M;
+
+lua_shared_dict upstream_weight_dict 5M;
 
 server {
     listen 80;
     server_name blog.jamespan.me;
 
+    location /st {
+
+        default_type 'text/plain';
+
+        content_by_lua_file /etc/nginx/lua/st.lua;
+     }
+
+    location /ups {
+        default_type text/plain;
+
+        content_by_lua_block {
+            local upstream = require "ngx.upstream"
+            local srvs, err = upstream.get_primary_peers("backend_blog_jamespan_me")
+            if not srvs then
+                ngx.say("failed to get servers in upstream ", "backend_blog_jamespan_me")
+            else
+                for _, srv in ipairs(srvs) do
+                    local first = true
+                    for k, v in pairs(srv) do
+                        if first then
+                            first = false
+                            ngx.print("    ")
+                        else
+                            ngx.print(", ")
+                        end
+                        if type(v) == "table" then
+                            ngx.print(k, " = {", concat(v, ", "), "}")
+                        else
+                            ngx.print(k, " = ", v)
+                        end
+                    end
+                    ngx.print("\n")
+                end
+            end
+        }
+    }
+
+
     location / {
+
+        proxy_pass http://backend_blog_jamespan_me;
         proxy_next_upstream http_502 http_503 http_504 http_404 error timeout invalid_header;
         
         #proxy_cache static-page;
         #proxy_cache_valid 200 304 3m;
         #add_header  Nginx-Cache "$upstream_cache_status";
-        add_header  X-Time '$request_time';
+        #add_header  X-Time '$request_time';
+        
+        log_by_lua_file /etc/nginx/lua/dynamic-upstream-weight.lua;
 
-        proxy_pass http://backend_blog_jamespan_me;
     }
 }
