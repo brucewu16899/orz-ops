@@ -29,12 +29,11 @@ server {
 
 	location / {
 
-		content_by_lua_block {
-			ngx.say("Hello there, but there's nothing here")
-		}
+		default_type 'text/html';
+		return 200 'Hi there, but there\'s nothing here. Go to <a href="http://blog.jamespan.me/">my blog</a> for a visit?';
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.
-		try_files $uri $uri/ =404;
+		# try_files $uri $uri/ =404;
 		# Uncomment to enable naxsi on this location
 		# include /etc/nginx/naxsi.rules
 	}
