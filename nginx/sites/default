@@ -28,6 +28,10 @@ server {
 	server_name localhost;
 
 	location / {
+
+		content_by_lua_block {
+			ngx.say("Hello there, but there's nothing here")
+		}
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.
 		try_files $uri $uri/ =404;

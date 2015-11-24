@@ -28,10 +28,7 @@ upstream backend_blog_jamespan_me {
     server 47.88.139.152:3030;
 }
 
-lua_shared_dict log_dict 5M;
-
 lua_shared_dict upstream_res_time_dict 5M;
-
 lua_shared_dict upstream_weight_dict 5M;
 
 server {
@@ -85,7 +82,7 @@ server {
         #proxy_cache_valid 200 304 3m;
         #add_header  Nginx-Cache "$upstream_cache_status";
         #add_header  X-Time '$request_time';
-        
+
         log_by_lua_file /etc/nginx/lua/dynamic-upstream-weight.lua;
 
     }
