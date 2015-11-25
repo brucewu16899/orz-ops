@@ -28,8 +28,8 @@ upstream backend_blog_jamespan_me {
     server 47.88.139.152:3030;
 }
 
-lua_shared_dict upstream_res_time_dict 5M;
-lua_shared_dict upstream_weight_dict 5M;
+lua_shared_dict upstream_res_time_dict 1M;
+lua_shared_dict upstream_weight_dict 1M;
 
 server {
     listen 80;
