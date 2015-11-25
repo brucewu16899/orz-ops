@@ -12,8 +12,13 @@ for addr in string.gmatch(ngx.var.upstream_addr, "([^, ]+)") do
     for time in string.gmatch(ngx.var.upstream_response_time, "([^, ]+)") do
         if idx_addr == idx_time then
             local passed_time = res_time_dict:get(addr) or 0
-            local new_time = passed_time * 0.5 + tonumber(time)
+            local new_time = passed_time * 0.3 + tonumber(time) * 0.7
             res_time_dict:set(addr, new_time)
+            local diff = math.abs((new_time - passed_time) / passed_time)
+            if diff > 0.2 then
+                need_update_weight = true
+                ngx.log(ngx.ALERT, "need to update upstream weight because diff " .. diff .. " greater than ".. 0.2)
+            end
             if new_time > ever_max then
                 need_update_weight = true
                 ngx.log(ngx.ALERT, "need to update upstream weight because max value outdated")
@@ -71,8 +76,12 @@ if need_update_weight then
             local server_res_time = server_time_dict[server_name]
             if server_res_time ~= nil then
                 local weight = math.ceil(max_time / server_res_time)
-                local id = srv["id"]
                 --weight = math.pow(2, weight)
+                local fails = srv["fails"]
+                if fails > 0 then
+                    weight = 1
+                end
+                local id = srv["id"]
                 upstream.set_peer_weight("backend_blog_jamespan_me", false, id, weight)
                 weight_dict:set(server_name, weight)
                 --upstream.set_peer_current_weight("backend_blog_jamespan_me", false, id, 0)
