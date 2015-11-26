@@ -29,13 +29,13 @@ local check_if_update_weight = function (addr, new_time, old_time, dict)
         return true
     end
 
-    local ever_max = dict:get("max") or 0
+    local ever_max = dict:get("max") or -math.huge
     if new_time > ever_max then
         ngx.log(ngx.ALERT, "need to update upstream weight because max value outdated")
         return true
     end
 
-    local ever_min = dict:get("min") or 99999
+    local ever_min = dict:get("min") or math.huge
     if new_time < ever_min then
         ngx.log(ngx.ALERT, "need to update upstream weight because min value outdated")
         return true
@@ -43,6 +43,7 @@ local check_if_update_weight = function (addr, new_time, old_time, dict)
 
     return false
 end
+
 
 local check_if_weight_changed_unexpected = function (ups, upsteam_name, dict)
     local servers, err = ups.get_primary_peers(upsteam_name)
@@ -62,6 +63,7 @@ local check_if_weight_changed_unexpected = function (ups, upsteam_name, dict)
     return false
 end
 
+
 local gen_server_time_map = function(dict)
     local keys = dict:get_keys(100)
     local map = {}
@@ -72,6 +74,7 @@ local gen_server_time_map = function(dict)
     return map
 end
 
+
 local min_max = function (t)
     local max = -math.huge
     local min = math.huge
@@ -81,6 +84,7 @@ local min_max = function (t)
     end
     return min, max
 end
+
 
 local update_server_weight = function (ups, upsteam_name, dict, server_time_map, max_time)
     local servers, err = ups.get_primary_peers(upsteam_name)
