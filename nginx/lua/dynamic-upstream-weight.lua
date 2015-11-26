@@ -1,7 +1,3 @@
-local res_time_dict = ngx.shared.upstream_res_time_dict
-local weight_dict = ngx.shared.upstream_weight_dict
-local upstream = require "ngx.upstream"
-
 
 local string2array = function (str)
     local arr = {}
@@ -67,7 +63,7 @@ local check_if_weight_changed_unexpected = function (ups, upsteam_name, dict)
 end
 
 local gen_server_time_map = function(dict)
-    local keys = res_time_dict:get_keys(100)
+    local keys = dict:get_keys(100)
     local map = {}
     for _, key in ipairs(keys) do
         local time = dict:get(key)
@@ -105,16 +101,20 @@ local update_server_weight = function (ups, upsteam_name, dict, server_time_map,
         elseif time ~= nil and time > 0 then
             weight = math.ceil(max_time / time)
         end
-        
+
         if weight > 0 then
-            upstream.set_peer_weight("backend_blog_jamespan_me", false, id, weight)
-            upstream.set_peer_effective_weight("backend_blog_jamespan_me", false, id, weight)
+            ups.set_peer_weight("backend_blog_jamespan_me", false, id, weight)
+            ups.set_peer_effective_weight("backend_blog_jamespan_me", false, id, weight)
 
             dict:set(server_name, weight)
         end
     end
 end
 
+
+local res_time_dict = ngx.shared.upstream_res_time_dict
+local weight_dict = ngx.shared.upstream_weight_dict
+local upstream = require "ngx.upstream"
 
 local ups_identity = "backend_blog_jamespan_me"
 --it may have multi address and times if nginx tried more than 1 upstream servers
