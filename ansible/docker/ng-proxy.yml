@@ -6,9 +6,12 @@
   - name: Start nginx proxy
     docker:
       name: ng-proxy
-      image: jamespan/nginx-proxy
+      image: index.alauda.cn/jamespan/ng-proxy
+      #image: index.alauda.cn/jamespan/ng-proxy:v20151127.124912
       state: reloaded
       pull: always
       net: bridge
+      restart_policy: always
+      restart_policy_retry: 3
       ports: 
       - "80:80"
