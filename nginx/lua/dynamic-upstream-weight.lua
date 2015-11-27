@@ -23,7 +23,7 @@ end
 --check if we need to update the weights, with some strategy
 local check_if_update_weight = function (addr, new_time, old_time, dict)
     local diff = math.abs((new_time - old_time) / old_time)
-    local threshold = 0.2
+    local threshold = 3
     if diff > threshold then
         ngx.log(ngx.ALERT, "need to update upstream weight because diff " .. diff .. " greater than ".. threshold .. " on " .. addr)
         return true
