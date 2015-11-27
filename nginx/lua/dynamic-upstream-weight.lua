@@ -107,8 +107,8 @@ local update_server_weight = function (ups, upsteam_name, dict, server_time_map,
         end
 
         if weight > 0 then
-            ups.set_peer_weight("backend_blog_jamespan_me", false, id, weight)
-            ups.set_peer_effective_weight("backend_blog_jamespan_me", false, id, weight)
+            ups.set_peer_weight(upsteam_name, false, id, weight)
+            ups.set_peer_effective_weight(upsteam_name, false, id, weight)
 
             dict:set(server_name, weight)
         end
