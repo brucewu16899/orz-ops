@@ -1,4 +1,4 @@
-FROM index.alauda.cn/jamespan/ng-proxy:latest
+FROM index.alauda.cn/jamespan/ng-proxy:v20151128.102950
 
 MAINTAINER Pan Jiabang <panjiabang@gmail.com> 
 

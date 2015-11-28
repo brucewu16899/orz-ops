@@ -39,9 +39,9 @@ RUN mkdir -p /tmp/src && \
     make && \
     make install && \
     make clean && \
-#    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers perl && \
-#    rm -rf /tmp/src && \
-#    rm -rf /var/cache/apk/* && \
+    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers perl && \
+    rm -rf /tmp/src && \
+    rm -rf /var/cache/apk/* && \
     echo "Done"
 
 # Copy Config
