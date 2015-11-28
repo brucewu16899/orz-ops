@@ -37,10 +37,11 @@ RUN mkdir -p /tmp/src && \
         --with-mail_ssl_module \
         --add-module=/tmp/src/nginx-upstream-fair-master && \
     make && \
-    make install && make clean && \
-    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers perl && \
-    rm -rf /tmp/src && \
-    rm -rf /var/cache/apk/* && \
+    make install && \
+    make clean && \
+#    apk del build-base openssl-dev pcre-dev zlib-dev linux-headers perl && \
+#    rm -rf /tmp/src && \
+#    rm -rf /var/cache/apk/* && \
     echo "Done"
 
 # Copy Config
@@ -53,5 +54,5 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/
 
 EXPOSE 80 443
 
-# Start Nginx and with dockerize
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
