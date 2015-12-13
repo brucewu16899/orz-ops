@@ -27,7 +27,12 @@ server {
 
         proxy_pass http://backend_blog_jamespan_me;
         proxy_next_upstream http_502 http_503 http_504 http_404 error timeout invalid_header;
-        
+
+        proxy_cache static-page;
+        proxy_cache_valid 200 304 3m;
+        add_header  Nginx-Cache "$upstream_cache_status";
+        add_header  X-Time '$request_time';
+
         log_by_lua_file /etc/nginx/lua/dynamic-upstream-weight.lua;
     }
 
