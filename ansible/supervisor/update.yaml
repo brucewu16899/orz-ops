@@ -1,0 +1,16 @@
+---
+- hosts: all
+  tasks:
+  - name: mkdir supervisor dir
+    action: shell mkdir -p ~/supervisor/
+  - name: mkdir hooky dir
+    action: shell mkdir -p ~/hookey/log/
+  - name: copy supervisor config
+    copy: src=./supervisord.conf dest=~/supervisor/supervisord.conf
+  - name: reload config
+    action: shell kill -HUP `cat ~/supervisor/supervisord.pid`
+    register: supervisord_reload_result
+    ignore_errors: True
+  - name: start supervisord
+    action: shell supervisord -c ~/supervisor/supervisord.conf
+    when: supervisord_reload_result | failed
