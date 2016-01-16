@@ -73,3 +73,33 @@ server {
         }
     }
 }
+
+# HTTPS server
+
+server {
+    listen 443;
+    server_name blog.jamespan.me;
+ 
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+ 
+    ssl_session_timeout 5m;
+ 
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+ 
+    location / {
+ 
+         proxy_pass http://backend_blog_jamespan_me;
+         proxy_next_upstream http_502 http_503 http_504 http_404 error timeout invalid_header;
+ 
+         proxy_cache static-page;
+         proxy_cache_valid 200 304 3m;
+         add_header  Nginx-Cache "$upstream_cache_status";
+         add_header  X-Time '$request_time';
+ 
+         log_by_lua_file /etc/nginx/lua/dynamic-upstream-weight.lua;
+    }
+}
