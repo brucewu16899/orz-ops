@@ -1,17 +1,20 @@
 - hosts: all
   tasks:
-  - name: Install Docker PY
-    pip: name=docker-py==1.4.0 
-    become: yes
+  # - name: Install Docker PY
+  #   pip: name=docker-py==1.4.0
+  #   become: yes
   - name: Start nginx proxy
     docker:
       name: ng-proxy
       image: index.alauda.cn/jamespan/ng-proxy
-      #image: index.alauda.cn/jamespan/ng-proxy:v20151127.124912
+      #image: index.alauda.cn/jamespan/ng-proxy:v20160116.020154
       state: reloaded
       pull: always
       net: bridge
       restart_policy: always
       restart_policy_retry: 3
       ports: 
-      - "80:80"
+        - "80:80"
+        - "443:443"
+      volumes:
+        - "/home/panjiabang/letsencrypt/blog.jamespan.me/:/etc/nginx/ssl/"
