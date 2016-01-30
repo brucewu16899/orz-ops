@@ -1,6 +1,9 @@
 
 local string2array = function (str)
     local arr = {}
+    if str == nil or str == '' then
+        return arr
+    end
     for field in string.gmatch(str, "([^, ]+)") do
         table.insert(arr, field)
     end
