@@ -1,19 +1,5 @@
-server {
-    listen 4000;
-    port_in_redirect off;
-    proxy_redirect http://$proxy_host/blog.jamespan.me/ http://$host/;
-    location / {
-        proxy_pass http://jamespan.github.io/blog.jamespan.me/;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-}
-
-
 upstream backend_blog_jamespan_me {
-    server 127.0.0.1:4000;
     server 203.88.174.206:3030;
-    server 47.88.139.152:3030;
 }
 
 lua_shared_dict upstream_res_time_dict 1M;
@@ -24,45 +10,7 @@ server {
     server_name blog.jamespan.me;
 
     location / {
-
         return 301 https://$server_name$request_uri;
-    }
-
-    location /st {
-
-        default_type 'text/plain';
-
-        content_by_lua_file /etc/nginx/lua/st.lua;
-     }
-
-    location /ups {
-        default_type text/plain;
-
-        content_by_lua_block {
-            local upstream = require "ngx.upstream"
-            local srvs, err = upstream.get_primary_peers("backend_blog_jamespan_me")
-            if not srvs then
-                ngx.say("failed to get servers in upstream ", "backend_blog_jamespan_me")
-            else
-                for _, srv in ipairs(srvs) do
-                    local first = true
-                    for k, v in pairs(srv) do
-                        if first then
-                            first = false
-                            ngx.print("    ")
-                        else
-                            ngx.print(", ")
-                        end
-                        if type(v) == "table" then
-                            ngx.print(k, " = {", concat(v, ", "), "}")
-                        else
-                            ngx.print(k, " = ", v)
-                        end
-                    end
-                    ngx.print("\n")
-                end
-            end
-        }
     }
 }
 
@@ -92,6 +40,5 @@ server {
          add_header  Nginx-Cache "$upstream_cache_status";
          add_header  X-Time '$request_time';
  
-         log_by_lua_file /etc/nginx/lua/dynamic-upstream-weight.lua;
     }
 }
