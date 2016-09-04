@@ -11,9 +11,9 @@ RUN mkdir -p /tmp/src && \
     wget https://github.com/gnosek/nginx-upstream-fair/archive/master.zip && \
     unzip master.zip && \
     apk add openssl-dev pcre-dev zlib-dev readline-dev ncurses-dev linux-headers build-base && \
-    wget https://openresty.org/download/ngx_openresty-1.9.3.2.tar.gz && \
-    tar -zxvf ngx_openresty-1.9.3.2.tar.gz && \
-    cd /tmp/src/ngx_openresty-1.9.3.2 && \
+    wget https://openresty.org/download/openresty-1.11.2.1.tar.gz && \
+    tar -zxvf openresty-1.11.2.1.tar.gz && \
+    cd /tmp/src/openresty-1.11.2.1 && \
     wget https://raw.githubusercontent.com/JamesPan/lua-upstream-nginx-module/6b40d40a42aa6a8e4214a8c247b7d32ce9d37895/src/ngx_http_lua_upstream_module.c && \
     mv ngx_http_lua_upstream_module.c ./bundle/ngx_lua_upstream-0.04/src/ngx_http_lua_upstream_module.c && \
     ./configure \

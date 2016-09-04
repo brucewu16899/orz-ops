@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+  # - name: Install Docker PY
+  #   pip: name=docker-py==1.4.0
+  #   become: yes
+  - name: Start Grav Blog
+    docker:
+      name: blog
+      image: index.alauda.cn/jamespan/grav
+      state: reloaded
+      pull: always
+      net: bridge
+      restart_policy: always
+      restart_policy_retry: 3
+      ports: 
+        - "3030:80"
+      volumes:
+        - "/home/panjiabang/blog-on-grav:/var/www/html"
